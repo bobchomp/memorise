@@ -1,6 +1,7 @@
 import { lazy, Suspense, useEffect } from 'react'
 import { Link, NavLink, Route, Routes } from 'react-router-dom'
 import { useLiveQuery } from 'dexie-react-hooks'
+import { Library, Plus, Repeat } from 'lucide-react'
 import { AccountButton } from './components/Account'
 import { isDue } from './lib/srs'
 import { local } from './lib/store'
@@ -41,12 +42,12 @@ export default function App() {
       <header className="topbar">
         <Link to="/" className="brand"><img src="/icon.svg" alt="" />Memorise</Link>
         <nav>
-          <NavLink to="/" end className="navlink"><span aria-hidden>📚</span> <span className="label">Texts</span></NavLink>
+          <NavLink to="/" end className="navlink"><Library size={18} aria-hidden /><span className="label">Texts</span></NavLink>
           <NavLink to="/review" className="navlink">
-            <span aria-hidden>🔁</span> <span className="label">Review</span>
+            <Repeat size={18} aria-hidden /><span className="label">Review</span>
             {due > 0 && <span className="pill" aria-label={`${due} due`}>{due}</span>}
           </NavLink>
-          <NavLink to="/new" className="navlink"><span aria-hidden>＋</span> <span className="label">New</span></NavLink>
+          <NavLink to="/new" className="navlink"><Plus size={18} aria-hidden /><span className="label">New</span></NavLink>
           <AccountButton />
         </nav>
       </header>

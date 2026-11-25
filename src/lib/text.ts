@@ -9,6 +9,8 @@ export interface Token {
 
 export interface Chunk {
   index: number
+  /** Paragraph (blank-line-separated block) the chunk belongs to, for display. */
+  para: number
   /** Stable key for progress: survives edits elsewhere in the text. */
   key: string
   text: string
@@ -59,24 +61,25 @@ export function hash(s: string): string {
 
 export function chunkText(body: string, langId: number, split: number): Chunk[] {
   const lang = languageById(langId)
-  const lines = body.split('\n')
-  let groups: string[][]
+  // Each group is the chunk's lines plus the paragraph it came from.
+  let groups: { lines: string[]; para: number }[]
+  const paras = body.split(/\n\s*\n/).map((p) => p.trim()).filter(Boolean)
   if (split === 0) {
-    groups = lines.map((l) => l.trim()).filter(Boolean).map((l) => [l])
+    groups = paras.flatMap((p, para) =>
+      p.split('\n').map((l) => l.trim()).filter(Boolean).map((l) => ({ lines: [l], para })),
+    )
+  } else if (split === 1) {
+    groups = paras.flatMap((p, para) => sentences(p, lang).map((s) => ({ lines: [s], para })))
   } else {
-    const paras = body.split(/\n\s*\n/).map((p) => p.trim()).filter(Boolean)
-    groups =
-      split === 1
-        ? paras.flatMap((p) => sentences(p, lang)).map((s) => [s])
-        : paras.map((p) => p.split('\n').map((l) => l.trim()).filter(Boolean))
+    groups = paras.map((p, para) => ({ lines: p.split('\n').map((l) => l.trim()).filter(Boolean), para }))
   }
   const seen = new Map<string, number>()
-  return groups.map((g, index) => {
+  return groups.map(({ lines: g, para }, index) => {
     const text = g.join('\n')
     const base = hash(normalize(text, langId))
     const n = seen.get(base) ?? 0 // repeated lines (choruses) get distinct keys
     seen.set(base, n + 1)
-    return { index, key: n ? `${base}.${n}` : base, text, lines: g.map((l) => tokenize(l, langId)) }
+    return { index, para, key: n ? `${base}.${n}` : base, text, lines: g.map((l) => tokenize(l, langId)) }
   })
 }
 

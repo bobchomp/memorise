@@ -71,7 +71,7 @@ export default function Practice() {
         <span className="spacer" />
         {inPath && pathIdx >= 0 && <span className="small muted">Step {pathIdx + 1} of {GUIDED_PATH.length}</span>}
       </div>
-      <h1 style={{ marginTop: 8 }}>{info.icon} {info.name}</h1>
+      <h1 className="mode-title"><span className="mode-ico"><info.icon size={20} aria-hidden /></span>{info.name}</h1>
       <p className="muted small" style={{ marginTop: -4 }}>
         {keys ? `${selected.length} part${selected.length > 1 ? 's' : ''} to review` : `Part ${from + 1}${to > from ? `–${to + 1}` : ''} of ${chunks.length}`}
       </p>
