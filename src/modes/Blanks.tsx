@@ -1,6 +1,7 @@
 import { useMemo, useRef, useState } from 'react'
 import { flatten, Passage, perChunk } from '../components/Passage'
 import { matchWord, rng, shuffle, type Match } from '../lib/text'
+import { Progress } from './session'
 import type { ModeProps } from './types'
 
 /**
@@ -42,6 +43,7 @@ export default function Blanks({ chunks, lang, bcp47, paragraphs, settings, onDo
 
   return (
     <div className="stack">
+      <Progress done={[...blanks].filter((i) => (answers[i] ?? '').trim()).length} total={blanks.size} label={`${[...blanks].filter((i) => (answers[i] ?? '').trim()).length} of ${blanks.size} blanks filled`} />
       {!checked && (
         <div className="row">
           <span className="muted small">Blanks:</span>

@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react'
 import { KeyCatcher } from '../components/KeyCatcher'
 import { flatten, Passage, perChunk } from '../components/Passage'
 import type { Chunk } from '../lib/text'
+import { Progress } from './session'
 import type { ModeProps } from './types'
 import { useInitialsTyper } from './useInitialsTyper'
 
@@ -28,10 +29,7 @@ export default function BuildUp({ chunks, lang, bcp47, paragraphs, onDone }: Mod
 
   return (
     <div className="stack">
-      <div className="practice-head">
-        <div className="progress"><div style={{ width: `${(round / chunks.length) * 100}%` }} /></div>
-        <span className="small muted">Round {round + 1} of {chunks.length}</span>
-      </div>
+      <Progress done={round} total={chunks.length} label={`Round ${round + 1} of ${chunks.length}`} />
       {phase === 'study' ? (
         <>
           <p className="muted small">{round === 0 ? 'Read this, then type it from memory.' : 'New part highlighted. Read it, then type everything from the start.'}</p>
@@ -52,7 +50,6 @@ export default function BuildUp({ chunks, lang, bcp47, paragraphs, onDone }: Mod
             }}
           />
           <div className="row"><button className="btn small" onClick={t.reveal}>Reveal word</button></div>
-          <div style={{ height: 80 }} />
           <KeyCatcher onKey={t.press} shake={t.shake} />
         </>
       )}

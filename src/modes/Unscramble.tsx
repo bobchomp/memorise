@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react'
 import { flatten, Passage } from '../components/Passage'
 import { baseForm, shuffle } from '../lib/text'
+import { Progress } from './session'
 import type { ModeProps } from './types'
 
 interface Segment {
@@ -70,10 +71,7 @@ export default function Unscramble({ chunks, lang, bcp47, paragraphs, onDone }: 
   const doneChunks = chunks.slice(0, current.chunk)
   return (
     <div className="stack">
-      <div className="practice-head">
-        <div className="progress"><div style={{ width: `${(seg / segments.length) * 100}%` }} /></div>
-        <span className="small muted">{seg + 1}/{segments.length}</span>
-      </div>
+      <Progress done={seg} total={segments.length} label={`Line ${seg + 1} of ${segments.length}`} />
       {doneChunks.length > 0 && <div style={{ opacity: 0.55 }}><Passage chunks={doneChunks.slice(-2)} lang={bcp47} paragraphs={paragraphs} /></div>}
       <div className="passage" lang={bcp47} style={{ minHeight: '2em' }}>
         {current.words.slice(0, placed).join(' ')}

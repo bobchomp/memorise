@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react'
 import { flatten } from '../components/Passage'
 import { baseForm, rng, shuffle } from '../lib/text'
+import { Progress } from './session'
 import type { ModeProps } from './types'
 
 interface Line {
@@ -69,12 +70,8 @@ export default function SpotError({ chunks, lang, bcp47, onDone }: ModeProps) {
 
   return (
     <div className="stack">
-      <div className="practice-head">
-        <div className="progress"><div style={{ width: `${(li / lines.length) * 100}%` }} /></div>
-        <span className="small muted">{li + 1}/{lines.length}</span>
-      </div>
-      <p className="muted small">Tap the word that's wrong, or say the line is correct.</p>
-      <div className="card passage" lang={bcp47}>
+      <Progress done={li} total={lines.length} label={`Line ${li + 1} of ${lines.length}`} />
+      <div className="card passage spot-line" lang={bcp47}>
         {line.tokens.map((t, i) =>
           t.w ? (
             <span

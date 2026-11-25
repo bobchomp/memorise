@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react'
 import { flatten, Passage, perChunk } from '../components/Passage'
 import { baseForm, rng, shuffle } from '../lib/text'
+import { Progress } from './session'
 import type { ModeProps } from './types'
 
 /** "What comes next?" Pick the right word from four, moving through the text. */
@@ -50,10 +51,7 @@ export default function Choice({ chunks, lang, bcp47, paragraphs, onDone }: Mode
 
   return (
     <div className="stack">
-      <div className="practice-head">
-        <div className="progress"><div style={{ width: `${(q / questions.length) * 100}%` }} /></div>
-        <span className="small muted">{Math.min(q + 1, questions.length)}/{questions.length}</span>
-      </div>
+      <Progress done={q} total={questions.length} />
       <Passage
         chunks={chunks}
         lang={bcp47}

@@ -1,5 +1,5 @@
 import { lazy, Suspense, useEffect } from 'react'
-import { Link, NavLink, Route, Routes } from 'react-router-dom'
+import { Link, NavLink, Route, Routes, useLocation } from 'react-router-dom'
 import { useLiveQuery } from 'dexie-react-hooks'
 import { Library, Plus, Repeat } from 'lucide-react'
 import { AccountButton } from './components/Account'
@@ -31,6 +31,8 @@ function useDueCount() {
 
 export default function App() {
   const due = useDueCount()
+  // Practice is a focused space: no site navigation or footer.
+  const focus = /\/practice\//.test(useLocation().pathname)
   useEffect(() => {
     const up = () => uploadPending().catch(() => {})
     up()
@@ -38,8 +40,8 @@ export default function App() {
     return () => window.removeEventListener('online', up)
   }, [])
   return (
-    <div className="shell">
-      <header className="topbar">
+    <div className={`shell${focus ? ' focus' : ''}`}>
+      {!focus && <header className="topbar">
         <Link to="/" className="brand"><img src="/icon.svg" alt="" />Memorise</Link>
         <nav>
           <NavLink to="/" end className="navlink"><Library size={18} aria-hidden /><span className="label">Texts</span></NavLink>
@@ -50,7 +52,7 @@ export default function App() {
           <NavLink to="/new" className="navlink"><Plus size={18} aria-hidden /><span className="label">New</span></NavLink>
           <AccountButton />
         </nav>
-      </header>
+      </header>}
       <main>
         <Suspense fallback={<p className="muted">Loading…</p>}>
           <Routes>
@@ -66,11 +68,11 @@ export default function App() {
           </Routes>
         </Suspense>
       </main>
-      <footer className="footer">
+      {!focus && <footer className="footer">
         <Link to="/how-it-works">How it works</Link>
         <Link to="/privacy">Privacy</Link>
         <span>Free forever. Your progress stays on your device unless you sign in.</span>
-      </footer>
+      </footer>}
     </div>
   )
 }

@@ -19,6 +19,7 @@ export function KeyCatcher({ onKey, placeholder, shake }: { onKey: (k: string) =
     el.classList.add('shake')
   }, [shake])
   return (
+    <div className="keybar">
     <input
       ref={ref}
       className="keyinput"
@@ -43,5 +44,6 @@ export function KeyCatcher({ onKey, placeholder, shake }: { onKey: (k: string) =
         e.target.value = ''
       }}
     />
+    </div>
   )
 }

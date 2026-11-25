@@ -19,7 +19,6 @@ export default function FirstLetters({ chunks, bcp47, paragraphs, onDone }: Mode
     })
   return (
     <div className="stack">
-      <p className="muted small">Say each word in your head from its first letter. Tap a word if you're stuck.</p>
       <Passage
         chunks={chunks}
         lang={bcp47}

@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react'
 import { shuffle, type Chunk } from '../lib/text'
+import { Progress } from './session'
 import type { ModeProps } from './types'
 
 interface Unit {
@@ -63,7 +64,7 @@ export default function Order({ chunks, bcp47, onDone }: ModeProps) {
 
   return (
     <div className="stack" lang={bcp47}>
-      <p className="muted small">Tap the parts in the right order.</p>
+      <Progress done={placed.length} total={units.length} />
       <div className="passage">
         {placed.map((i) => <div key={i} className="line">{units[i].text}</div>)}
       </div>

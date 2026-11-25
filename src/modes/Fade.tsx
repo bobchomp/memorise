@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react'
 import { flatten, Passage } from '../components/Passage'
 import { rng, shuffle } from '../lib/text'
+import { Progress } from './session'
 import type { ModeProps } from './types'
 
 const LEVELS = [0, 0.2, 0.4, 0.6, 0.8, 1]
@@ -18,6 +19,7 @@ export default function Fade({ chunks, bcp47, paragraphs, onDone }: ModeProps) {
 
   return (
     <div className="stack">
+      <Progress done={level} total={LEVELS.length - 1} label={`${Math.round(LEVELS[level] * 100)}% hidden`} />
       <div className="row">
         <span className="muted small">Hidden:</span>
         <div className="seg" role="group" aria-label="Level">

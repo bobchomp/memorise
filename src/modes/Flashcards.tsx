@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Passage } from '../components/Passage'
 import { initialOf } from '../lib/text'
+import { Progress } from './session'
 import type { ModeProps } from './types'
 
 const GRADES = [
@@ -50,10 +51,7 @@ export default function Flashcards({ chunks, bcp47, paragraphs, onDone }: ModePr
 
   return (
     <div className="stack">
-      <div className="practice-head">
-        <div className="progress"><div style={{ width: `${(i / chunks.length) * 100}%` }} /></div>
-        <span className="small muted">{i + 1}/{chunks.length}</span>
-      </div>
+      <Progress done={i} total={chunks.length} label={`Card ${i + 1} of ${chunks.length}`} />
       <div className="card stack">
         <div className="muted small">{prev ? 'After…' : 'How does it start?'}</div>
         {prev && <div style={{ opacity: 0.7 }}><Passage chunks={[prev]} lang={bcp47} /></div>}

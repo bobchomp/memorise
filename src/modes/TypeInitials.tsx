@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react'
 import { KeyCatcher } from '../components/KeyCatcher'
 import { flatten, Passage, perChunk } from '../components/Passage'
 import { initialOf } from '../lib/text'
+import { Progress } from './session'
 import type { ModeProps } from './types'
 import { useInitialsTyper } from './useInitialsTyper'
 
@@ -16,9 +17,8 @@ export default function TypeInitials({ chunks, lang, bcp47, paragraphs, onDone }
 
   return (
     <div className="stack">
-      <div className="practice-head">
-        <div className="progress" aria-label="Progress"><div style={{ width: `${(t.pos / words.length) * 100}%` }} /></div>
-        <span className="small muted">{t.pos}/{words.length}</span>
+      <Progress done={t.pos} total={words.length} label={`${t.pos} of ${words.length} words`} />
+      <div className="mode-toolbar">
         <div className="seg" role="group" aria-label="Hints">
           <button aria-pressed={cues === 'none'} onClick={() => setCues('none')}>No hints</button>
           <button aria-pressed={cues === 'initials'} onClick={() => setCues('initials')}>Show initials</button>
@@ -45,7 +45,6 @@ export default function TypeInitials({ chunks, lang, bcp47, paragraphs, onDone }
         <button className="btn small" onClick={t.reveal}>Reveal word</button>
         <span className="muted small">Wrong twice and the word is shown.</span>
       </div>
-      <div style={{ height: 80 }} />
       <KeyCatcher onKey={t.press} shake={t.shake} />
     </div>
   )
