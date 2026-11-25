@@ -15,7 +15,7 @@ export default function Editor() {
   const [title, setTitle] = useState('')
   const [body, setBody] = useState('')
   const [lang, setLang] = useState(() => Number(localStorage.getItem('memorise:lastLang') ?? 0))
-  const [split, setSplit] = useState(0)
+  const [split, setSplit] = useState(1)
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [loaded, setLoaded] = useState(!id)
